@@ -5,6 +5,8 @@
   background-size: 100%;
   width: 22px;
   height: 19px;
+  margin: 0;
+  padding: 0;
   cursor: pointer;
   background-position: center;
   background-color: #FFFFFF;

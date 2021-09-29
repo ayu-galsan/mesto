@@ -5,3 +5,12 @@
   grid-template-columns: repeat(auto-fit, minmax(282px, 1fr));
   gap: 20px 17px;
 }
+
+@media screen and (max-width: 767px) {
+  .elements {
+    margin-bottom: 48px;
+    margin-right: 19px;
+    margin-left: 19px;
+    width: calc(100% - (19px*2));
+  }
+}
