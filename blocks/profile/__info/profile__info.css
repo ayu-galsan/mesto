@@ -5,3 +5,10 @@
   margin: 22px auto 25px 30px;
   color: #FFFFFF;
 }
+
+@media screen and (max-width: 767px) {
+  .profile__info {
+    margin: 26px auto 36px;
+    justify-content: center;
+  }
+}
