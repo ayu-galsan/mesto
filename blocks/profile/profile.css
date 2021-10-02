@@ -1,14 +1,22 @@
 .profile {
-  max-width: calc(100% - (200px*2));
-  margin: 0px 200px 51px;
+  max-width: 880px;
+  width: 100%;
+  margin: 0px auto 51px;
   display: flex;
   align-items: center;
+  justify-content: center;
+}
+
+@media screen and (max-width: 1024px) {
+  .profile {
+    max-width: 680px;
+  }
 }
 
 @media screen and (max-width: 767px) {
   .profile {
-    max-width: calc(100% - (19px*2));
-    margin: 0px 19px 36px;
+    max-width: 282px;
+    margin: 0px auto 36px;
     flex-direction: column;
   }
 }

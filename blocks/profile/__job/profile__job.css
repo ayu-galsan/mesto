@@ -1,13 +1,15 @@
-.profile__subtitle {
-  font-family: Inter;
+.profile__job {
+  width: 336px;
   font-size: 18px;
   line-height: 1.22;
   margin: 0;
   padding: 0;
+  word-wrap: break-word;
 }
 
 @media screen and (max-width: 767px) {
-  .profile__subtitle {
+  .profile__job {
+    width: 282px;
     font-size: 14px;
     line-height: 1.21;
     text-align: center;

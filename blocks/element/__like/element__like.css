@@ -3,10 +3,10 @@
   background-image: url(../../../images/element__like.svg);
   background-repeat: no-repeat;
   background-size: 100%;
-  width: 22px;
-  height: 19px;
   margin: 0;
   padding: 0;
+  width: 22px;
+  height: 19px;
   cursor: pointer;
   background-position: center;
   background-color: #FFFFFF;
@@ -14,5 +14,5 @@
 }
 
 .element__like:hover {
-  opacity: 0.4;
+  opacity: 0.5;
 }
