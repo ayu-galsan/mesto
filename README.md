@@ -12,5 +12,4 @@ ___
 * логика сайта базируется на языке *JavaScript*;
 * организация файловой структуры проекта основана по правилам *Nested БЭМ*.
 
-[Ссылка проекта](https://ayu-galsan.github.io/russian-travel/)
-
+[Ссылка проекта](https://ayu-galsan.github.io/mesto/)
