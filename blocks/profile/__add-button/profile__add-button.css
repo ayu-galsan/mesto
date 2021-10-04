@@ -6,7 +6,10 @@
   border: 2px solid #FFFFFF;
   border-radius: 2px;
   background-color: #000000;
-  color: #FFFFFF;
+  background-image: url(../../../images/Add_Button.svg);
+  object-fit: fill;
+  background-position: center;
+  background-repeat: no-repeat;
   font-size: 22px;
   cursor: pointer;
   transition: opacity 0.5s ease-in;

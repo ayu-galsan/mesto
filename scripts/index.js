@@ -2,33 +2,27 @@ const popup = document.querySelector('.popup');
 const editButton = document.querySelector('.profile__edit-button');
 const closeButton = document.querySelector('.popup__close');
 const form = document.querySelector('.popup__form');
-const nameInput = document.querySelector('.popup__input_name');
-const jobInput = document.querySelector('.popup__input_job');
+const nameInput = document.querySelector('.popup__input_el_name');
+const jobInput = document.querySelector('.popup__input_el_job');
 const profileName = document.querySelector('.profile__name');
 const profileJob = document.querySelector('.profile__job');
 
+// Обработчик открытия класса popup
 function openPopup() {
   popup.classList.add('popup_opened');
 }
-editButton.addEventListener('click', openPopup)
-
+// Обработчик закрытия класса popup
 function closePopup() {
   popup.classList.remove('popup_opened');
 }
-closeButton.addEventListener('click', closePopup)
-
-function popupClickHandler(evt) {
-  if (evt.target.classList.contains('popup')) {
-    closePopup()
-  }
-}
-popup.addEventListener('mouseup', popupClickHandler)
-
+// Обработчик «отправки» формы
 function formSubmitHandler(evt) {
-  evt.preventDefault()
-  profileName.textContent = nameInput.value;
-  profileJob.textContent = jobInput.value;
-  closePopup();
+  evt.preventDefault() //отмена стандартной отправки формы
+  profileName.textContent = nameInput.value;// получаем значение полей jobInput и nameInput из свойства value
+  profileJob.textContent = jobInput.value;//и выбираем элементы, куда должны быть вставлены значения полей с помощью textContent
+  closePopup();//подключаем функцию закрытия класса popup
 }
-form.addEventListener('submit', formSubmitHandler)
 
+form.addEventListener('submit', formSubmitHandler)//при отправке данных - вызов функции «отправки» формы formSubmitHandler
+editButton.addEventListener('click', openPopup)// при клике по элементу editButton - вызов функции открытия класса popup
+closeButton.addEventListener('click', closePopup)// при клике по элементу closeButton - вызов функции закрытия класса popup
