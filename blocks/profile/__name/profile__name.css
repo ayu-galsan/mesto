@@ -9,6 +9,8 @@
   width: 100%;
   overflow: hidden;
   white-space: nowrap;
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 
 @media screen and (max-width: 1023px) {
@@ -21,6 +23,7 @@
   .profile__name {
     max-width: 189px;
     margin-bottom: 14px;
+    margin-left: 46px;
     font-size: 27px;
     line-height: 1.22;
     text-align: center;

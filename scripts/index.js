@@ -10,6 +10,8 @@ const profileJob = document.querySelector('.profile__job');
 // Обработчик открытия класса popup
 function openPopup() {
   popup.classList.add('popup_opened');
+  nameInput.value = profileName.textContent;// получаем значение полей jobInput и nameInput из свойства value
+  jobInput.value = profileJob.textContent;
 }
 // Обработчик закрытия класса popup
 function closePopup() {

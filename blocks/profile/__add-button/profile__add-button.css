@@ -7,10 +7,9 @@
   border-radius: 2px;
   background-color: #000000;
   background-image: url(../../../images/Add_Button.svg);
-  object-fit: fill;
+  background-size: 22px;
   background-position: center;
   background-repeat: no-repeat;
-  font-size: 22px;
   cursor: pointer;
   transition: opacity 0.5s ease-in;
 }
@@ -23,6 +22,6 @@
   .profile__add-button {
     width: 282px;
     height: 50px;
-    font-size: 16px;
+    background-size: 16px;
   }
 }
