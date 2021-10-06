@@ -5,6 +5,7 @@
   flex-wrap: wrap;
   margin: 22px auto 25px 30px;
   color: #FFFFFF;
+  box-sizing: border-box;
 }
 
 @media screen and (max-width: 1023px) {
