@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="./pages/index.css">
@@ -7,6 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mesto</title>
 </head>
+
 <body>
   <div class="page">
     <header class="header">
@@ -22,52 +24,8 @@
         </div>
         <button class="profile__add-button" type="button"></button>
       </section>
-      <section class="elements">
-        <article class="element">
-          <img class="element__image" src="./images/element__image-karachaevsk.png"
-            alt="Изображение старинной постройки">
-          <div class="element__container">
-            <h2 class="element__title">Карачаевск</h2>
-            <button class="element__like" type="button"></button>
-          </div>
-        </article>
-        <article class="element">
-          <img class="element__image" src="./images/element__image-elbrus.png" alt="Изображение горы Эльбрус">
-          <div class="element__container">
-            <h2 class="element__title">Гора Эльбрус</h2>
-            <button class="element__like" type="button"></button>
-          </div>
-        </article>
-        <article class="element">
-          <img class="element__image" src="./images/element__image-dombai.png" alt="Изображение горы Домбай">
-          <div class="element__container">
-            <h2 class="element__title">Домбай</h2>
-            <button class="element__like" type="button"></button>
-          </div>
-        </article>
-        <article class="element">
-          <img class="element__image" src="./images/element__image-elbrus.png" alt="Изображение горы Эльбрус">
-          <div class="element__container">
-            <h2 class="element__title">Гора Эльбрус</h2>
-            <button class="element__like" type="button"></button>
-          </div>
-        </article>
-        <article class="element">
-          <img class="element__image" src="./images/element__image-dombai.png" alt="Изображение горы Домбай">
-          <div class="element__container">
-            <h2 class="element__title">Домбай</h2>
-            <button class="element__like" type="button"></button>
-          </div>
-        </article>
-        <article class="element">
-          <img class="element__image" src="./images/element__image-karachaevsk.png"
-            alt="Изображение старинной постройки">
-          <div class="element__container">
-            <h2 class="element__title">Карачаево-Черкесия</h2>
-            <button class="element__like" type="button"></button>
-          </div>
-        </article>
-      </section>
+      <div class="elements">
+      </div>
     </main>
     <footer class="footer">
       <p class="footer__copyright">&copy; 2021 Mesto Russia</p>
@@ -85,6 +43,57 @@
       </div>
     </div>
   </div>
+  <template class="template">
+    <article class="element">
+      <img class="element__image" src="./images/element__image-karachaevsk.png" alt="Изображение старинной постройки">
+      <button class="element__trash" type="button"></button>
+      <div class="element__container">
+        <h2 class="element__title">Карачаевск</h2>
+        <button class="element__like" type="button"></button>
+      </div>
+    </article>
+    <article class="element">
+      <img class="element__image" src="./images/element__image-elbrus.png" alt="Изображение горы Эльбрус">
+      <button class="element__trash" type="button"></button>
+      <div class="element__container">
+        <h2 class="element__title">Гора Эльбрус</h2>
+        <button class="element__like" type="button"></button>
+      </div>
+    </article>
+    <article class="element">
+      <img class="element__image" src="./images/element__image-dombai.png" alt="Изображение горы Домбай">
+      <button class="element__trash" type="button"></button>
+      <div class="element__container">
+        <h2 class="element__title">Домбай</h2>
+        <button class="element__like" type="button"></button>
+      </div>
+    </article>
+    <article class="element">
+      <img class="element__image" src="./images/element__image-elbrus.png" alt="Изображение горы Эльбрус">
+      <button class="element__trash" type="button"></button>
+      <div class="element__container">
+        <h2 class="element__title">Гора Эльбрус</h2>
+        <button class="element__like" type="button"></button>
+      </div>
+    </article>
+    <article class="element">
+      <img class="element__image" src="./images/element__image-dombai.png" alt="Изображение горы Домбай">
+      <button class="element__trash" type="button"></button>
+      <div class="element__container">
+        <h2 class="element__title">Домбай</h2>
+        <button class="element__like" type="button"></button>
+      </div>
+    </article>
+    <article class="element">
+      <img class="element__image" src="./images/element__image-karachaevsk.png" alt="Изображение старинной постройки">
+      <button class="element__trash" type="button"></button>
+      <div class="element__container">
+        <h2 class="element__title">Карачаево-Черкесия</h2>
+        <button class="element__like" type="button"></button>
+      </div>
+    </article>
+  </template>>
   <script src="./scripts/index.js"></script>
 </body>
+
 </html>

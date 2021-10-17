@@ -6,6 +6,50 @@ const nameInput = document.querySelector('.popup__input_el_name');
 const jobInput = document.querySelector('.popup__input_el_job');
 const profileName = document.querySelector('.profile__name');
 const profileJob = document.querySelector('.profile__job');
+const initialCards = [
+  {
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+    name: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    name: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    name: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    name: 'Холмогорский район',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+    name: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+];
+
+const listElement = document.querySelector('.elements');
+const templateItem = document.querySelector('.template').content; // получаем содержимое template
+
+initialCards.forEach(prependCard)
+
+function createCard(item){
+  const cardElement = templateItem.querySelector('.element').cloneNode(true); // клонируем содержимое template
+  cardElement.querySelector('.element__image').setAttribute ('src', item.link); // наполняем содержимым - ссылка на картинку
+  cardElement.querySelector('.element__title').textContent = item.name; // наполняем содержимым - надпись под картинкой
+  return cardElement;
+}
+
+function prependCard(item){
+  const cardElement = createCard(item);
+  listElement.prepend(cardElement); // отображаем карточки
+}
+
 
 // Обработчик открытия класса popup
 function openPopup() {
@@ -28,3 +72,4 @@ function formSubmitHandler(evt) {
 form.addEventListener('submit', formSubmitHandler)//при отправке данных - вызов функции «отправки» формы formSubmitHandler
 editButton.addEventListener('click', openPopup)// при клике по элементу editButton - вызов функции открытия класса popup
 closeButton.addEventListener('click', closePopup)// при клике по элементу closeButton - вызов функции закрытия класса popup
+
