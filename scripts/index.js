@@ -38,6 +38,7 @@ const templateItem = document.querySelector('.template').content; // получ�
 
 initialCards.forEach(prependCard)
 
+// функция создания карточек
 function createCard(item){
   const cardElement = templateItem.querySelector('.element').cloneNode(true); // клонируем содержимое template
   cardElement.querySelector('.element__image').setAttribute ('src', item.link); // наполняем содержимым - ссылка на картинку
@@ -45,10 +46,15 @@ function createCard(item){
   return cardElement;
 }
 
+// функция отображения карточек
 function prependCard(item){
   const cardElement = createCard(item);
-  listElement.prepend(cardElement); // отображаем карточки
+  cardElement.querySelector('.element__like').addEventListener('click',function(evt) {
+    evt.target.classList.toggle('element__like_active');
+  }); //переключаем стиль для активного 'лайка'
+  listElement.prepend(cardElement); 
 }
+
 
 
 // Обработчик открытия класса popup
