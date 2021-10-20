@@ -4,7 +4,7 @@ const popupAddCard = document.querySelector('.popup_type_add');
 const popupOpenCard = document.querySelector('.popup_type_card');
 const editButton = document.querySelector('.profile__edit-button');
 const addButton = document.querySelector('.profile__add-button');
-const closeButtonsArray = document.querySelectorAll('.popup__close');
+const closeButtons = document.querySelectorAll('.popup__close');
 const formEditCard = document.querySelector('.popup__form_edit-card');
 const nameInput = document.querySelector('.popup__input_el_name');
 const jobInput = document.querySelector('.popup__input_el_job');
@@ -97,7 +97,7 @@ function closePopup(popup) {
 }
 
 //закрытие попапов по кнопке closeButton
-closeButtonsArray.forEach((item) => {
+closeButtons.forEach((item) => {
   item.addEventListener('click', function (evt) {
     closePopup(evt.target.closest('.popup'))
   });
