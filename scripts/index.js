@@ -73,6 +73,7 @@ function openBigCard(src, alt) {
   imageInPopup.src = src;
   imageInPopup.alt = alt;
   captionInPopup.textContent = alt;
+  console.log(link);
   openPopup(popupOpenCard);
 }
 
@@ -89,7 +90,6 @@ function prependCard(item) {
 // Обработчик открытия класса popup
 function openPopup(popup) {
   popup.classList.add('popup_opened');
-  console.log(link);
 }
 
 // Обработчик закрытия класса popup
