@@ -65,7 +65,6 @@ function createCard(item) {
     const elementImageSrc = elementCard.querySelector('.element__image').src;
     const elementImageAlt = elementCard.querySelector('.element__image').alt;
     openBigCard(elementImageSrc, elementImageAlt);
-    console.log(elementImageSrc, elementImageAlt);
   });
   return cardElement;
 }
@@ -102,7 +101,6 @@ function closePopup(popup) {
 closeButton.forEach((item) => {
   item.addEventListener('click', function (evt) {
     closePopup(evt.target.closest('.popup'))
-    console.log(item);
   });
 });
 
