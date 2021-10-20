@@ -1,6 +1,6 @@
-.element__trash {
+.element__delete {
   border: none;
-  background-image: url(../../../images/Trash__Button.svg);
+  background-image: url(../../../images/Delete__Button.svg);
   background-repeat: no-repeat;
   position: absolute;
   cursor: pointer;
@@ -13,6 +13,6 @@
   transition: opacity 0.5s ease-in;
 }
 
-.element__trash:hover {
+.element__delete:hover {
   opacity: 0.6;
 }
