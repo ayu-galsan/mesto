@@ -89,6 +89,7 @@ function prependCard(item) {
 // Обработчик открытия класса popup
 function openPopup(popup) {
   popup.classList.add('popup_opened');
+  console.log(link);
 }
 
 // Обработчик закрытия класса popup
