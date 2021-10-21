@@ -74,7 +74,7 @@ function openBigCard(src, alt) {
   imageInPopup.alt = alt;
   captionInPopup.textContent = alt;
   openPopup(popupOpenCard);
-  console.log(link);
+  console.log(alt);
 }
 
 // функция отображения карточек 
