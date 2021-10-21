@@ -73,8 +73,8 @@ function openBigCard(src, alt) {
   imageInPopup.src = src;
   imageInPopup.alt = alt;
   captionInPopup.textContent = alt;
-  console.log(link);
   openPopup(popupOpenCard);
+  console.log(link);
 }
 
 // функция отображения карточек 
