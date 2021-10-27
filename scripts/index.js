@@ -141,3 +141,4 @@ addButton.addEventListener('click', (evt) => {
 window.addEventListener('load', () => {
   document.querySelectorAll('.popup').forEach((popup) => popup.classList.add('popup_transition'))
 });
+
