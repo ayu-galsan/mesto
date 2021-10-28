@@ -24,7 +24,7 @@ const showInputError = (formElement, inputElement, errorMessage) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.add('popup__input_type_error');
   errorElement.textContent = errorMessage;
-  errorElement.classList.add('popup__input-erorr_active');
+  errorElement.classList.add('popup__input-error_active');
 };
 
 // Функция, которая удаляет класс с ошибкой
@@ -32,7 +32,7 @@ const hideInputError = (formElement, inputElement) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.remove('popup__input_type_error');
   errorElement.textContent = ' ';
-  errorElement.classList.remove('popup__input-erorr_active');
+  errorElement.classList.remove('popup__input-error_active');
 };
 
 // Функция, которая проверяет валидность поля
