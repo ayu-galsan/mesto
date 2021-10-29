@@ -1,4 +1,5 @@
 const popup = document.querySelector('.popup');
+const popupList = Array.from(document.querySelectorAll('.popup'));
 const popupEditProfile = document.querySelector('.popup_type_edit');
 const popupAddCard = document.querySelector('.popup_type_add');
 const popupOpenCard = document.querySelector('.popup_type_card');
@@ -17,133 +18,6 @@ const templateItem = document.querySelector('.template').content;
 const formAddCard = document.querySelector('.popup__form_add-card');
 const imageInPopup = document.querySelector('.popup__image');
 const captionInPopup = document.querySelector('.popup__caption');
-
-
-// Функция, которая добавляет класс с ошибкой
-const showInputError = (formElement, inputElement, errorMessage) => {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.add('popup__input_type_error');
-  errorElement.textContent = errorMessage;
-  errorElement.classList.add('popup__input-error_active');
-};
-
-// Функция, которая удаляет класс с ошибкой
-const hideInputError = (formElement, inputElement) => {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.remove('popup__input_type_error');
-  errorElement.textContent = ' ';
-  errorElement.classList.remove('popup__input-error_active');
-};
-
-// Функция, которая проверяет валидность поля
-const isValid = (formElement, inputElement) => {
-  if (!inputElement.validity.valid) {
-    // Если поле не проходит валидацию, покажем ошибку
-    showInputError(formElement, inputElement, inputElement.validationMessage);
-  } else {
-    // Если проходит, скроем
-    hideInputError(formElement, inputElement);
-  }
-};
-
-//функция hasInvalidInput принимает массив формы, 
-//проверяет наличие невалидного поля и указывает можно ли разблокировать кнопку сабмита
-const hasInvalidInput = (inputList) => {
-  return inputList.some((inputElement) => {
-    return !inputElement.validity.valid;
-  })
-};
-
-//функция toggleButtonState включает/отключает кнопку
-const toggleButtonState = (inputList, buttonElement) => {
-  if (hasInvalidInput(inputList)) {
-    buttonElement.classList.add('popup__save_inactive');
-  }
-  else {
-    buttonElement.classList.remove('popup__save_inactive');
-  }
-}
-
-const setEventListeners = (formElement) => {
-  // Находим все поля внутри формы,
-  // сделаем из них массив методом Array.from
-  const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
-  const buttonElement = formElement.querySelector('.popup__save');
-  toggleButtonState(inputList, buttonElement);
-  // Обойдём все элементы полученной коллекции
-  inputList.forEach((inputElement) => {
-    // каждому полю добавим обработчик события input
-    inputElement.addEventListener('input', function () {
-      // Внутри колбэка вызовем isValid,
-      // передав ей форму и проверяемый элемент
-      isValid(formElement, inputElement);
-      toggleButtonState(inputList, buttonElement);
-    });
-  });
-};
-
-const enableValidation = () => {
-  // Найдём все формы с указанным классом в DOM,
-  // сделаем из них массив методом Array.from
-  const formList = Array.from(document.querySelectorAll('.popup__form'));
-
-  // Переберём полученную коллекцию
-  formList.forEach((formElement) => {
-    formElement.addEventListener('submit', function (evt) {
-      // У каждой формы отменим стандартное поведение
-      evt.preventDefault();
-    });
-    // Для каждой формы вызовем функцию setEventListeners,
-    // передав ей элемент формы
-    setEventListeners(formElement);
-  });
-};
-
-// Вызовем функцию
-enableValidation();
-
-//Функция закрытия попапа кликом на оверлей
-function popupClickHandler(evt) {
-  console.log(evt.target);
-  if (evt.target.classList.contains('popup')) {
-    closePopup(popup);
-  }
-}
-
-popup.addEventListener('mouseup', popupClickHandler);
-
-//Функция закрытия попапа нажатием на клавишу Esc.
-function keyHandler (evt) {
-  if (evt.key === "Escape") {
-    closePopup(popup);
-}
-}
-
-popup.addEventListener('keydown', keyHandler); 
-
-
-/*form.addEventListener('submit', function (evt) {
-  // Отменим стандартное поведение по сабмиту
-  evt.preventDefault();
-});
-
-// Вызовем функцию isValid на каждый ввод символа
-formInput.addEventListener('input', isValid); 
-
-
-formElement.addEventListener('submit', function (evt) {
-  evt.preventDefault();
-});
-
-formInput.addEventListener('input', function (evt) {
-  console.log (evt.target.validity);
-});*/
-
-
-
-
-
-
 
 initialCards.forEach(prependCard)
 
@@ -196,6 +70,24 @@ function openPopup(popup) {
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
 }
+
+//Закрытие попапов кликом на оверлей
+popupList.forEach((item) => {
+  item.addEventListener('click', function (evt) {
+    if (evt.target.classList.contains('popup_opened')) {
+      closePopup(item);
+    }
+  });
+});
+
+//Функция закрытия попапа нажатием на клавишу Esc.
+popupList.forEach((item) => {
+  document.addEventListener('keydown', function (evt) {
+    if (evt.key === "Escape") {
+      closePopup(item);
+    }
+  });
+});
 
 //закрытие попапов по кнопке closeButton
 closeButtons.forEach((item) => {
