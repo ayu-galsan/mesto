@@ -1,5 +1,5 @@
 const popup = document.querySelector('.popup');
-const popupList = Array.from(document.querySelectorAll('.popup'));
+const popupLists = Array.from(document.querySelectorAll('.popup'));
 const popupEditProfile = document.querySelector('.popup_type_edit');
 const popupAddCard = document.querySelector('.popup_type_add');
 const popupOpenCard = document.querySelector('.popup_type_card');
@@ -72,8 +72,8 @@ function closePopup(popup) {
 }
 
 //Закрытие попапов кликом на оверлей
-popupList.forEach((item) => {
-  item.addEventListener('click', function (evt) {
+popupLists.forEach((item) => {
+  item.addEventListener('mouseup', function (evt) {
     if (evt.target.classList.contains('popup_opened')) {
       closePopup(item);
     }
@@ -81,7 +81,7 @@ popupList.forEach((item) => {
 });
 
 //Функция закрытия попапа нажатием на клавишу Esc.
-popupList.forEach((item) => {
+popupLists.forEach((item) => {
   document.addEventListener('keydown', function (evt) {
     if (evt.key === "Escape") {
       closePopup(item);

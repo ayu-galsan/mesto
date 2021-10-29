@@ -77,14 +77,14 @@ const enableValidation = ({formSelector, inputSelector, submitButtonSelector, in
   // сделаем из них массив методом Array.from
   const formList = Array.from(document.querySelectorAll(formSelector));
   // Переберём полученную коллекцию
-  formList.forEach((formElement) => {
-    formElement.addEventListener('submit', (evt) => {
+  formList.forEach((formSelector) => {
+    formSelector.addEventListener('submit', (evt) => {
       // У каждой формы отменим стандартное поведение
       evt.preventDefault();
     });
     // Для каждой формы вызовем функцию setEventListeners,
     // передав ей элемент формы
-    setEventListeners(formElement, {formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass});
+    setEventListeners(formSelector, {inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass});
   });
 };
 
