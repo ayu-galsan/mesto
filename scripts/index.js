@@ -1,10 +1,13 @@
 const popup = document.querySelector('.popup');
+const errorMessages = Array.from(document.querySelectorAll('.popup__error'));
+const popupInputs = Array.from(document.querySelectorAll('.popup__input'));
 const popupLists = Array.from(document.querySelectorAll('.popup'));
 const popupEditProfile = document.querySelector('.popup_type_edit');
 const popupAddCard = document.querySelector('.popup_type_add');
 const popupOpenCard = document.querySelector('.popup_type_card');
 const editButton = document.querySelector('.profile__edit-button');
 const addButton = document.querySelector('.profile__add-button');
+const submitButton = document.querySelector('.popup__submit-button');
 const closeButtons = document.querySelectorAll('.popup__close');
 const formEditCard = document.querySelector('.popup__form_edit-card');
 const nameInput = document.querySelector('.popup__input_el_name');
@@ -64,12 +67,20 @@ function prependCard(item) {
 // Обработчик открытия класса popup
 function openPopup(popup) {
   popup.classList.add('popup_opened');
+
 }
 
 // Обработчик закрытия класса popup
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
-}
+  //убираю сообщения об ошибках при закрытии попапов
+  errorMessages.forEach((item) => {
+    item.classList.remove('popup__error_visible');
+  });
+  popupInputs.forEach((item) => {
+    item.classList.remove('popup__input_type_error');
+  });
+};
 
 //Закрытие попапов кликом на оверлей
 popupLists.forEach((item) => {
@@ -121,6 +132,8 @@ formEditCard.addEventListener('submit', handleFormEditProfileSubmit)//при о�
 // при клике по элементу editButton - вызов функции открытия класса popup - popupEditProfile
 editButton.addEventListener('click', (evt) => {
   openPopup(popupEditProfile);
+  submitButton.classList.remove('popup__submit-button_disabled');
+  submitButton.removeAttribute('disabled');//делаю кнопку отправки активной, т.к. поля при открытии заполнены автоматически
   nameInput.value = profileName.textContent;// получаем значение полей jobInput и nameInput из свойства value
   jobInput.value = profileJob.textContent;
 });
@@ -128,6 +141,8 @@ editButton.addEventListener('click', (evt) => {
 // при клике по элементу addButton - вызов функции открытия класса popup - popup_add-card
 addButton.addEventListener('click', (evt) => {
   openPopup(popupAddCard);
+  placeInput.value = '';
+  linkInput.value = '';
 });
 
 //добавляем каждому popup - popup_transition для плавности анимации
