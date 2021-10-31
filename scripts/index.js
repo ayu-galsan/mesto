@@ -7,7 +7,8 @@ const popupAddCard = document.querySelector('.popup_type_add');
 const popupOpenCard = document.querySelector('.popup_type_card');
 const editButton = document.querySelector('.profile__edit-button');
 const addButton = document.querySelector('.profile__add-button');
-const submitButton = document.querySelector('.popup__submit-button');
+const profileSubmitButton = popupEditProfile.querySelector('.popup__submit-button');
+const newCardSubmitButton = popupAddCard.querySelector('.popup__submit-button');
 const closeButtons = document.querySelectorAll('.popup__close');
 const formEditCard = document.querySelector('.popup__form_edit-card');
 const nameInput = document.querySelector('.popup__input_el_name');
@@ -67,7 +68,6 @@ function prependCard(item) {
 // Обработчик открытия класса popup
 function openPopup(popup) {
   popup.classList.add('popup_opened');
-
 }
 
 // Обработчик закрытия класса popup
@@ -131,18 +131,19 @@ formEditCard.addEventListener('submit', handleFormEditProfileSubmit)//при о�
 
 // при клике по элементу editButton - вызов функции открытия класса popup - popupEditProfile
 editButton.addEventListener('click', (evt) => {
-  openPopup(popupEditProfile);
-  submitButton.classList.remove('popup__submit-button_disabled');
-  submitButton.removeAttribute('disabled');//делаю кнопку отправки активной, т.к. поля при открытии заполнены автоматически
+  profileSubmitButton.classList.remove('popup__submit-button_disabled');
+  profileSubmitButton.removeAttribute('disabled');//делаю кнопку отправки активной, т.к. поля при открытии заполнены автоматически
   nameInput.value = profileName.textContent;// получаем значение полей jobInput и nameInput из свойства value
   jobInput.value = profileJob.textContent;
+  openPopup(popupEditProfile);
 });
 
 // при клике по элементу addButton - вызов функции открытия класса popup - popup_add-card
 addButton.addEventListener('click', (evt) => {
+  newCardSubmitButton.classList.add('popup__submit-button_disabled');
+  newCardSubmitButton.disabled = true;
+  formAddCard.reset();
   openPopup(popupAddCard);
-  placeInput.value = '';
-  linkInput.value = '';
 });
 
 //добавляем каждому popup - popup_transition для плавности анимации
