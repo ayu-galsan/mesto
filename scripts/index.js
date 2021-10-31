@@ -1,9 +1,13 @@
 const popup = document.querySelector('.popup');
+const errorMessages = Array.from(document.querySelectorAll('.popup__error'));
+const popupInputs = Array.from(document.querySelectorAll('.popup__input'));
+const popupLists = Array.from(document.querySelectorAll('.popup'));
 const popupEditProfile = document.querySelector('.popup_type_edit');
 const popupAddCard = document.querySelector('.popup_type_add');
 const popupOpenCard = document.querySelector('.popup_type_card');
 const editButton = document.querySelector('.profile__edit-button');
 const addButton = document.querySelector('.profile__add-button');
+const submitButton = document.querySelector('.popup__submit-button');
 const closeButtons = document.querySelectorAll('.popup__close');
 const formEditCard = document.querySelector('.popup__form_edit-card');
 const nameInput = document.querySelector('.popup__input_el_name');
@@ -17,32 +21,6 @@ const templateItem = document.querySelector('.template').content;
 const formAddCard = document.querySelector('.popup__form_add-card');
 const imageInPopup = document.querySelector('.popup__image');
 const captionInPopup = document.querySelector('.popup__caption');
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
 
 initialCards.forEach(prependCard)
 
@@ -89,12 +67,38 @@ function prependCard(item) {
 // Обработчик открытия класса popup
 function openPopup(popup) {
   popup.classList.add('popup_opened');
+
 }
 
 // Обработчик закрытия класса popup
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
-}
+  //убираю сообщения об ошибках при закрытии попапов
+  errorMessages.forEach((item) => {
+    item.classList.remove('popup__error_visible');
+  });
+  popupInputs.forEach((item) => {
+    item.classList.remove('popup__input_type_error');
+  });
+};
+
+//Закрытие попапов кликом на оверлей
+popupLists.forEach((item) => {
+  item.addEventListener('mouseup', function (evt) {
+    if (evt.target.classList.contains('popup_opened')) {
+      closePopup(item);
+    }
+  });
+});
+
+//Функция закрытия попапа нажатием на клавишу Esc.
+popupLists.forEach((item) => {
+  document.addEventListener('keydown', function (evt) {
+    if (evt.key === "Escape") {
+      closePopup(item);
+    }
+  });
+});
 
 //закрытие попапов по кнопке closeButton
 closeButtons.forEach((item) => {
@@ -122,12 +126,14 @@ function handleFormEditProfileSubmit(evt) {
   closePopup(popupEditProfile);//подключаем функцию закрытия класса popup
 }
 
-formAddCard.addEventListener('submit', handleFormAddCardSubmit)//при отправке данных - вызов функции «отправки» формы handleFormAddCardSubmit
+formAddCard.addEventListener('submit', handleFormAddCardSubmit,)//при отправке данных - вызов функции «отправки» формы handleFormAddCardSubmit
 formEditCard.addEventListener('submit', handleFormEditProfileSubmit)//при отправке данных - вызов функции «отправки» формы handleFormEditProfileSubmit
 
 // при клике по элементу editButton - вызов функции открытия класса popup - popupEditProfile
 editButton.addEventListener('click', (evt) => {
   openPopup(popupEditProfile);
+  submitButton.classList.remove('popup__submit-button_disabled');
+  submitButton.removeAttribute('disabled');//делаю кнопку отправки активной, т.к. поля при открытии заполнены автоматически
   nameInput.value = profileName.textContent;// получаем значение полей jobInput и nameInput из свойства value
   jobInput.value = profileJob.textContent;
 });
@@ -135,6 +141,8 @@ editButton.addEventListener('click', (evt) => {
 // при клике по элементу addButton - вызов функции открытия класса popup - popup_add-card
 addButton.addEventListener('click', (evt) => {
   openPopup(popupAddCard);
+  placeInput.value = '';
+  linkInput.value = '';
 });
 
 //добавляем каждому popup - popup_transition для плавности анимации
