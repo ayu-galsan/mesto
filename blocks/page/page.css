@@ -2,6 +2,7 @@
   margin: auto;
   display: flex;
   min-width: 320px;
+  min-height: 100vh;
   flex-direction: column;
   align-items: center;
   background-color: #000000;

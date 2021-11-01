@@ -1,6 +1,3 @@
-const popup = document.querySelector('.popup');
-const errorMessages = Array.from(document.querySelectorAll('.popup__error'));
-const popupInputs = Array.from(document.querySelectorAll('.popup__input'));
 const popupLists = Array.from(document.querySelectorAll('.popup'));
 const popupEditProfile = document.querySelector('.popup_type_edit');
 const popupAddCard = document.querySelector('.popup_type_add');
@@ -30,7 +27,8 @@ function createCard(item) {
   const cardElement = templateItem.querySelector('.element').cloneNode(true); // клонируем содержимое template
   const cardImage = cardElement.querySelector('.element__image');
   const cardTitle = cardElement.querySelector('.element__title');
-  const cardDelete = cardElement.querySelector('.element__delete'); // обьявляем переменные
+  const cardDelete = cardElement.querySelector('.element__delete');
+  const cardLike = cardElement.querySelector('.element__like');// обьявляем переменные
   cardImage.src = item.link; // наполняем содержимым - ссылка на картинку
   cardImage.alt = item.name; // текст, если картинка не загрузится
   cardTitle.textContent = item.name; // наполняем содержимым - надпись под картинкой
@@ -44,6 +42,9 @@ function createCard(item) {
     const elementImageAlt = elementCard.querySelector('.element__image').alt;
     openBigCard(elementImageSrc, elementImageAlt);
   });
+  cardLike.addEventListener('click', function (evt) {
+    evt.target.classList.toggle('element__like_active');
+  }); //переключаем стиль для активного 'лайка'
   return cardElement;
 }
 
@@ -58,28 +59,19 @@ function openBigCard(src, alt) {
 // функция отображения карточек 
 function prependCard(item) {
   const cardElement = createCard(item);
-  const cardLike = cardElement.querySelector('.element__like');
-  cardLike.addEventListener('click', function (evt) {
-    evt.target.classList.toggle('element__like_active');
-  }); //переключаем стиль для активного 'лайка'
   listElement.prepend(cardElement);
 }
 
 // Обработчик открытия класса popup
 function openPopup(popup) {
   popup.classList.add('popup_opened');
+  document.addEventListener('keydown', closeByEsc);
 }
 
 // Обработчик закрытия класса popup
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
-  //убираю сообщения об ошибках при закрытии попапов
-  errorMessages.forEach((item) => {
-    item.classList.remove('popup__error_visible');
-  });
-  popupInputs.forEach((item) => {
-    item.classList.remove('popup__input_type_error');
-  });
+  document.removeEventListener('keydown', closeByEsc);
 };
 
 //Закрытие попапов кликом на оверлей
@@ -92,13 +84,12 @@ popupLists.forEach((item) => {
 });
 
 //Функция закрытия попапа нажатием на клавишу Esc.
-popupLists.forEach((item) => {
-  document.addEventListener('keydown', function (evt) {
-    if (evt.key === "Escape") {
-      closePopup(item);
-    }
-  });
-});
+function closeByEsc(evt) {
+  if (evt.key === "Escape") {
+    const openedPopup = document.querySelector('.popup_opened');
+    closePopup(openedPopup); 
+  }
+} 
 
 //закрытие попапов по кнопке closeButton
 closeButtons.forEach((item) => {
@@ -135,7 +126,7 @@ editButton.addEventListener('click', (evt) => {
   profileSubmitButton.removeAttribute('disabled');//делаю кнопку отправки активной, т.к. поля при открытии заполнены автоматически
   nameInput.value = profileName.textContent;// получаем значение полей jobInput и nameInput из свойства value
   jobInput.value = profileJob.textContent;
-  openPopup(popupEditProfile);
+  cleanErrors(popupEditProfile);
 });
 
 // при клике по элементу addButton - вызов функции открытия класса popup - popup_add-card
@@ -143,8 +134,21 @@ addButton.addEventListener('click', (evt) => {
   newCardSubmitButton.classList.add('popup__submit-button_disabled');
   newCardSubmitButton.disabled = true;
   formAddCard.reset();
-  openPopup(popupAddCard);
+  cleanErrors(popupAddCard);
 });
+
+// функция, которая сбрасывает классы с ошибкой при открытии
+function cleanErrors(popup) {
+  const errorMessages = Array.from(popup.querySelectorAll('.popup__error'));
+  const popupInputs = Array.from(popup.querySelectorAll('.popup__input'));
+  errorMessages.forEach((item) => {
+    item.classList.remove('popup__error_visible');
+  });
+  popupInputs.forEach((item) => {
+    item.classList.remove('popup__input_type_error');
+  });
+  openPopup(popup);
+}
 
 //добавляем каждому popup - popup_transition для плавности анимации
 window.addEventListener('load', () => {
