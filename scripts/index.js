@@ -1,5 +1,3 @@
-initialCards.forEach(prependCard)
-
 // функция создания карточек
 function createCard(item) {
   const cardElement = templateItem.querySelector('.element').cloneNode(true); // клонируем содержимое template
@@ -105,6 +103,7 @@ editButton.addEventListener('click', (evt) => {
   nameInput.value = profileName.textContent;// получаем значение полей jobInput и nameInput из свойства value
   jobInput.value = profileJob.textContent;
   cleanErrors(popupEditProfile);
+  openPopup(popupEditProfile);
 });
 
 // при клике по элементу addButton - вызов функции открытия класса popup - popup_add-card
@@ -113,9 +112,10 @@ addButton.addEventListener('click', (evt) => {
   newCardSubmitButton.disabled = true;
   formAddCard.reset();
   cleanErrors(popupAddCard);
+  openPopup(popupAddCard);
 });
 
-// функция, которая сбрасывает классы с ошибкой при открытии
+// функция, которая сбрасывает классы с ошибкой
 function cleanErrors(popup) {
   const errorMessages = Array.from(popup.querySelectorAll('.popup__error'));
   const popupInputs = Array.from(popup.querySelectorAll('.popup__input'));
@@ -125,7 +125,6 @@ function cleanErrors(popup) {
   popupInputs.forEach((item) => {
     item.classList.remove('popup__input_type_error');
   });
-  openPopup(popup);
 }
 
 //добавляем каждому popup - popup_transition для плавности анимации
@@ -133,3 +132,4 @@ window.addEventListener('load', () => {
   document.querySelectorAll('.popup').forEach((popup) => popup.classList.add('popup_transition'))
 });
 
+initialCards.forEach(prependCard)
