@@ -1,35 +1,79 @@
+import Card from './Card.js';
+import FormValidator from './FormValidator.js';
+
+const popupLists = Array.from(document.querySelectorAll('.popup'));
+const popupEditProfile = document.querySelector('.popup_type_edit');
+const popupAddCard = document.querySelector('.popup_type_add');
+const profileSubmitButton = popupEditProfile.querySelector('.popup__submit-button');
+const newCardSubmitButton = popupAddCard.querySelector('.popup__submit-button');
+const editButton = document.querySelector('.profile__edit-button');
+const addButton = document.querySelector('.profile__add-button');
+const closeButtons = document.querySelectorAll('.popup__close');
+const formEditCard = document.querySelector('.popup__form_edit-card');
+const formAddCard = document.querySelector('.popup__form_add-card');
+const nameInput = document.querySelector('.popup__input_el_name');
+const jobInput = document.querySelector('.popup__input_el_job');
+const placeInput = document.querySelector('.popup__input_el_place');
+const linkInput = document.querySelector('.popup__input_el_link');
+const profileName = document.querySelector('.profile__name');
+const profileJob = document.querySelector('.profile__job');
+const listElement = document.querySelector('.elements');
+const ESC_KEY = "Escape";
+
+const config = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__submit-button',
+  inactiveButtonClass: 'popup__submit-button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible',
+  likeButtonSelector: '.element__like',
+  imageSelector: '.element__image',
+  titleSelector: '.element__title',
+  deleteButtonSelector: '.element__delete',
+  elementsSelector: '.elements',
+  elementSelector: '.element',
+  activeLikeClass: 'element__like_active'
+};
+
+const initialCards = [
+  {
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+    name: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    name: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    name: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    name: 'Холмогорский район',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+    name: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+];
+
+initialCards.forEach((item) => {
+  prependCard(item)
+});
+
 // функция создания карточек
 function createCard(item) {
-  const cardElement = templateItem.querySelector('.element').cloneNode(true); // клонируем содержимое template
-  const cardImage = cardElement.querySelector('.element__image');
-  const cardTitle = cardElement.querySelector('.element__title');
-  const cardDelete = cardElement.querySelector('.element__delete');
-  const cardLike = cardElement.querySelector('.element__like');// обьявляем переменные
-  cardImage.src = item.link; // наполняем содержимым - ссылка на картинку
-  cardImage.alt = item.name; // текст, если картинка не загрузится
-  cardTitle.textContent = item.name; // наполняем содержимым - надпись под картинкой
-  cardDelete.addEventListener('click', function (evt) {
-    evt.target.closest('.element').remove(); // удаляем карточки путем нажатия на кнопку 'element__delete'
-  });
-  cardImage.addEventListener('click', function (evt) {
-    evt.preventDefault();
-    const elementCard = evt.target.closest('.element');
-    const elementImageSrc = elementCard.querySelector('.element__image').src;
-    const elementImageAlt = elementCard.querySelector('.element__image').alt;
-    openBigCard(elementImageSrc, elementImageAlt);
-  });
-  cardLike.addEventListener('click', function (evt) {
-    evt.target.classList.toggle('element__like_active');
-  }); //переключаем стиль для активного 'лайка'
+  // Создадим экземпляр карточки
+  const card = new Card(item, '.template');
+  // Создаём карточку и возвращаем наружу
+  const cardElement = card.generateCard();
   return cardElement;
-}
-
-//функция открытия popup_type_card
-function openBigCard(src, alt) {
-  imageInPopup.src = src;
-  imageInPopup.alt = alt;
-  captionInPopup.textContent = alt;
-  openPopup(popupOpenCard);
 }
 
 // функция отображения карточек 
@@ -38,8 +82,16 @@ function prependCard(item) {
   listElement.prepend(cardElement);
 }
 
+// создаем экземпляр класса форм
+const addFormValidator = new FormValidator(config, formAddCard);
+const editFormValidator = new FormValidator(config, formEditCard);
+
+// функции проверки форм
+addFormValidator.enableValidation();
+editFormValidator.enableValidation(); 
+
 // Обработчик открытия класса popup
-function openPopup(popup) {
+export default function openPopup(popup) {
   popup.classList.add('popup_opened');
   document.addEventListener('keydown', closeByEsc);
 }
@@ -132,4 +184,3 @@ window.addEventListener('load', () => {
   document.querySelectorAll('.popup').forEach((popup) => popup.classList.add('popup_transition'))
 });
 
-initialCards.forEach(prependCard)
