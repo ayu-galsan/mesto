@@ -63,10 +63,6 @@ const initialCards = [
   }
 ];
 
-initialCards.forEach((item) => {
-  prependCard(item)
-});
-
 // функция создания карточек
 function createCard(item) {
   // Создадим экземпляр карточки
@@ -82,13 +78,17 @@ function prependCard(item) {
   listElement.prepend(cardElement);
 }
 
+initialCards.forEach((item) => {
+  prependCard(item)
+});
+
 // создаем экземпляр класса форм
 const addFormValidator = new FormValidator(config, formAddCard);
 const editFormValidator = new FormValidator(config, formEditCard);
 
 // функции проверки форм
 addFormValidator.enableValidation();
-editFormValidator.enableValidation(); 
+editFormValidator.enableValidation();
 
 // Обработчик открытия класса popup
 export default function openPopup(popup) {
@@ -102,14 +102,17 @@ function closePopup(popup) {
   document.removeEventListener('keydown', closeByEsc);
 };
 
-//Закрытие попапов кликом на оверлей
-popupLists.forEach((item) => {
-  item.addEventListener('mouseup', function (evt) {
+//Закрытие попапов кликом на оверлей по кнопке closeButton
+popupLists.forEach((popup) => {
+  popup.addEventListener('click', (evt) => {
     if (evt.target.classList.contains('popup_opened')) {
-      closePopup(item);
+      closePopup(popup);
+    }
+    if (evt.target.classList.contains('popup__close')) {
+      closePopup(popup);
     }
   });
-});
+})
 
 //Функция закрытия попапа нажатием на клавишу Esc.
 function closeByEsc(evt) {
@@ -118,13 +121,6 @@ function closeByEsc(evt) {
     closePopup(openedPopup);
   }
 }
-
-//закрытие попапов по кнопке closeButton
-closeButtons.forEach((item) => {
-  item.addEventListener('click', function (evt) {
-    closePopup(evt.target.closest('.popup'))
-  });
-});
 
 // Обработчик «отправки» формы добавления карточек
 function handleFormAddCardSubmit(evt) {
@@ -150,34 +146,18 @@ formEditCard.addEventListener('submit', handleFormEditProfileSubmit)//при о�
 
 // при клике по элементу editButton - вызов функции открытия класса popup - popupEditProfile
 editButton.addEventListener('click', (evt) => {
-  profileSubmitButton.classList.remove('popup__submit-button_disabled');
-  profileSubmitButton.removeAttribute('disabled');//делаю кнопку отправки активной, т.к. поля при открытии заполнены автоматически
   nameInput.value = profileName.textContent;// получаем значение полей jobInput и nameInput из свойства value
   jobInput.value = profileJob.textContent;
-  cleanErrors(popupEditProfile);
+  editFormValidator.resetValidation();
   openPopup(popupEditProfile);
 });
 
 // при клике по элементу addButton - вызов функции открытия класса popup - popup_add-card
 addButton.addEventListener('click', (evt) => {
-  newCardSubmitButton.classList.add('popup__submit-button_disabled');
-  newCardSubmitButton.disabled = true;
   formAddCard.reset();
-  cleanErrors(popupAddCard);
+  addFormValidator.resetValidation();
   openPopup(popupAddCard);
 });
-
-// функция, которая сбрасывает классы с ошибкой
-function cleanErrors(popup) {
-  const errorMessages = Array.from(popup.querySelectorAll('.popup__error'));
-  const popupInputs = Array.from(popup.querySelectorAll('.popup__input'));
-  errorMessages.forEach((item) => {
-    item.classList.remove('popup__error_visible');
-  });
-  popupInputs.forEach((item) => {
-    item.classList.remove('popup__input_type_error');
-  });
-}
 
 //добавляем каждому popup - popup_transition для плавности анимации
 window.addEventListener('load', () => {

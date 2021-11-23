@@ -2,6 +2,7 @@ export default class FormValidator {
   constructor(config, formElement) {
     this._config = config;
     this._formElement = formElement;
+    this._inputList = [...this._formElement.querySelectorAll(this._config.inputSelector)];
   }
 
   // Функция, которая проверяет валидность поля
@@ -38,8 +39,7 @@ export default class FormValidator {
 
   // функция обработчик для всех полей формы
   _setFormListeners() {
-    const inputList = [...this._formElement.querySelectorAll(this._config.inputSelector)];
-    inputList.forEach(inputElement => {
+    this._inputList.forEach(inputElement => {
       inputElement.addEventListener('input', () => {
         this._handleFieldValidation(inputElement);
         this._toggleButtonState();
@@ -47,6 +47,15 @@ export default class FormValidator {
     });
     this._formElement.addEventListener('submit', (evt) => {
       evt.preventDefault();
+    });
+  }
+
+  // функция, которая сбрасывает классы с ошибкой
+  resetValidation() {
+    this._toggleButtonState();
+    this._inputList.forEach((inputElement) => {
+      const errorElement = this._formElement.querySelector(`#${inputElement.id}-error`);
+      this._hideInputError(inputElement, errorElement);
     });
   }
 
