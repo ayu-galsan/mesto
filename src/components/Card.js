@@ -1,10 +1,9 @@
-import openPopup from "./index.js";
-
 export default class Card {
-  constructor(data, cardselector) {
+  constructor(data, cardselector, openPopup) {
     this._name = data.name;
     this._link = data.link;
     this._cardselector = cardselector;
+    this._openPopup = openPopup;
   }
 
   //связываем класс с разметкой
@@ -35,7 +34,7 @@ export default class Card {
   _setEventListeners() {
     this._elementLike.addEventListener('click', () => this._handleLikeClick());
     this._elementDelete.addEventListener('click', () => this._remove());
-    this._elementImage.addEventListener('click', () => this._popupOpenBigCard());
+    this._elementImage.addEventListener('click', () => this._handleCardClick());
   }
 
   _handleLikeClick() {
@@ -46,14 +45,8 @@ export default class Card {
     this._element.remove();
   }
 
-  //функция открытия popup_type_card
-  _popupOpenBigCard() {
-    this._openCard = document.querySelector('.popup_type_card');
-    this._imageInPopup = this._openCard.querySelector('.popup__image');
-    this._captionInPopup = this._openCard.querySelector('.popup__caption');
-    this._imageInPopup.src = this._link;
-    this._imageInPopup.alt = this._name;
-    this._captionInPopup.textContent = this._name;
-    openPopup(this._openCard);
+  _handleCardClick = () => {
+    this._openPopup({name: this._name, link: this._link});
   }
+
 }
