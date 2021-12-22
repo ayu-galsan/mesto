@@ -4,11 +4,8 @@ export const formEditCard = document.querySelector('.popup__form_edit-card');
 export const formAddCard = document.querySelector('.popup__form_add-card');
 export const nameInput = document.querySelector('.popup__input_el_name');
 export const jobInput = document.querySelector('.popup__input_el_job');
-export const placeInput = document.querySelector('.popup__input_el_place');
-export const linkInput = document.querySelector('.popup__input_el_link');
 export const profileName = document.querySelector('.profile__name');
 export const profileJob = document.querySelector('.profile__job');
-export const listElement = document.querySelector('.elements');
 export const ESC_KEY = "Escape";
 
 export const config = {

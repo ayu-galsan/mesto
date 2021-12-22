@@ -3,6 +3,7 @@ export default class FormValidator {
     this._config = config;
     this._formElement = formElement;
     this._inputList = [...this._formElement.querySelectorAll(this._config.inputSelector)];
+    this._buttonElement = this._formElement.querySelector(this._config.submitButtonSelector);
   }
 
   // Функция, которая проверяет валидность поля
@@ -32,9 +33,8 @@ export default class FormValidator {
 
   // функция, которая проверяет кнопку
   _toggleButtonState() {
-    const buttonElement = this._formElement.querySelector(this._config.submitButtonSelector);
-    buttonElement.disabled = !this._formElement.checkValidity();
-    buttonElement.classList.toggle(this._config.inactiveButtonClass, !this._formElement.checkValidity());
+    this._buttonElement.disabled = !this._formElement.checkValidity();
+    this._buttonElement.classList.toggle(this._config.inactiveButtonClass, !this._formElement.checkValidity());
   }
 
   // функция обработчик для всех полей формы

@@ -8,9 +8,6 @@ import { formEditCard } from '../utils/constants.js';
 import { formAddCard } from '../utils/constants.js';
 import { nameInput } from '../utils/constants.js';
 import { jobInput } from '../utils/constants.js';
-import { placeInput } from '../utils/constants.js';
-import { linkInput } from '../utils/constants.js';
-import { listElement } from '../utils/constants.js';
 import UserInfo from '../components/UserInfo.js';
 import Card from '../components/Card.js';
 import FormValidator from '../components/FormValidator.js';
@@ -20,27 +17,42 @@ import PopupWithForm from '../components/PopupWithForm.js';
 
 const popupWithImage = new PopupWithImage('.popup_type_card');
 
+function createCard(item) {
+  const card = new Card(item, '.template', popupWithImage.open);
+  const cardElement = card.generateCard();
+  return cardElement
+}
+
+popupWithImage.setEventListeners();
+
 const cardList = new Section({
   items: initialCards,
   renderer: (item) => {
-    const card = new Card(item, '.template', popupWithImage.open);
-    const cardElement = card.generateCard();
-    cardList.addItem(cardElement);
-    popupWithImage.setEventListeners();
+    cardList.addItem(createCard(item));
   }
 },
-  listElement
+  '.elements'
 )
 
 cardList.renderItems();
 
-// создаем экземпляр класса форм
-const addFormValidator = new FormValidator(config, formAddCard);
-const editFormValidator = new FormValidator(config, formEditCard);
+//создаем универсальный экземпляр валидаторов всех форм
+const formValidators = {};
 
-// функции проверки форм
-addFormValidator.enableValidation();
-editFormValidator.enableValidation();
+// Включение валидации
+const enableValidation = (config) => {
+  const formList = Array.from(document.querySelectorAll(config.formSelector));
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(config, formElement);
+    // получаем данные из атрибута `name` у формы
+    const formName = formElement.getAttribute('name');
+    // записываем в объект под именем формы
+    formValidators[formName] = validator;
+    validator.enableValidation();
+  });
+};
+
+enableValidation(config);
 
 const userInfo = new UserInfo('.profile__name', '.profile__job');
 
@@ -56,18 +68,16 @@ editButton.addEventListener('click', () => {
   const info = userInfo.getUserInfo()
   nameInput.value = info.name;
   jobInput.value = info.job;
-  editFormValidator.resetValidation();
+  formValidators[formEditCard.getAttribute('name')].resetValidation();
   popupEditForm.open();
 });
 
-const popupAddForm = new PopupWithForm('.popup_type_add', () => {
+const popupAddForm = new PopupWithForm('.popup_type_add', (input) => {
   const itemCard = {
-    name: placeInput.value,
-    link: linkInput.value
+    name: input.place,
+    link: input.link
   }
-  const card = new Card(itemCard, '.template', popupWithImage.open);
-  const cardElement = card.generateCard();
-  cardList.addItem(cardElement);
+  cardList.addItem(createCard(itemCard));
   popupAddForm.close();
 }
 )
@@ -75,7 +85,7 @@ const popupAddForm = new PopupWithForm('.popup_type_add', () => {
 popupAddForm.setEventListeners();
 
 addButton.addEventListener('click', () => {
-  addFormValidator.resetValidation();
+  formValidators[formAddCard.getAttribute('name')].resetValidation();
   popupAddForm.open()
 });
 
