@@ -60,6 +60,7 @@ const userInfo = new UserInfo('.profile__name', '.profile__job');
 const popupEditForm = new PopupWithForm('.popup_type_edit', (input) => {
   userInfo.setUserInfo(input);
   popupEditForm.close();
+  console.log(input);
 })
 
 popupEditForm.setEventListeners();
