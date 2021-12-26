@@ -1,7 +1,9 @@
+import Api from '../components/Api.js';
+
 import '../pages/index.css';
 
 import { config } from '../utils/constants.js';
-import { initialCards } from '../utils/constants.js';
+//import { initialCards } from '../utils/constants.js';
 import { editButton } from '../utils/constants.js';
 import { addButton } from '../utils/constants.js';
 import { formEditCard } from '../utils/constants.js';
@@ -15,6 +17,43 @@ import Section from '../components/Section.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 
+
+const userInfo = new UserInfo('.profile__name', '.profile__job');
+const api = new Api({
+  adress: "https://mesto.nomoreparties.co/v1/cohort-32",
+  token: "aa423f91-d0a1-4966-9ae7-163cc71f5190"
+})
+
+/* api.getInitialCards()
+ .then(res => {
+   cardList.renderItems(res)
+ })
+ .catch(err => {
+   console.log("Ошибка:", err)
+ })
+
+ api.getUserData() 
+   .then(res => {
+     console.log(userInfo.setUserInfo(res.name, res.about))
+   })
+   .catch(err => {
+     console.log("Ошибка:", err)
+   }) */
+
+Promise.all([api.getUserData(), api.getInitialCards()])
+ 
+.then(([userData, cards]) => {
+  debugger
+    userInfo.setUserInfo(userData.data)
+    console.log(userInfo.getUserInfo(userData.name, userData.about))
+    console.log(userData);
+    cardList.renderItems(cards)
+  })
+  
+
+
+
+
 const popupWithImage = new PopupWithImage('.popup_type_card');
 
 function createCard(item) {
@@ -26,7 +65,7 @@ function createCard(item) {
 popupWithImage.setEventListeners();
 
 const cardList = new Section({
-  items: initialCards,
+  //items: initialCards,
   renderer: (item) => {
     cardList.addItem(createCard(item));
   }
@@ -34,7 +73,7 @@ const cardList = new Section({
   '.elements'
 )
 
-cardList.renderItems();
+//cardList.renderItems();
 
 //создаем универсальный экземпляр валидаторов всех форм
 const formValidators = {};
@@ -54,32 +93,44 @@ const enableValidation = (config) => {
 
 enableValidation(config);
 
-const userInfo = new UserInfo('.profile__name', '.profile__job');
 
 
-const popupEditForm = new PopupWithForm('.popup_type_edit', (input) => {
-  userInfo.setUserInfo(input);
+const popupEditForm = new PopupWithForm('.popup_type_edit', () => {
+  //userInfo.setUserInfo(input);
   popupEditForm.close();
-  console.log(input);
+  api.editProfile({
+    name: userInfo.getUserInfo().name,
+    about: userInfo.getUserInfo().about
+  })
+    .then(res => console.log(userInfo.setUserInfo(res)))
+    .catch(err => console.log(err))    
 })
 
 popupEditForm.setEventListeners();
 
 editButton.addEventListener('click', () => {
-  const info = userInfo.getUserInfo()
+  const info = userInfo.getUserInfo();
   nameInput.value = info.name;
-  jobInput.value = info.job;
+  jobInput.value = info.about;
   formValidators[formEditCard.getAttribute('name')].resetValidation();
-  popupEditForm.open();
+  popupEditForm.open(); 
+  console.dir(nameInput);
+  console.dir(jobInput); 
 });
 
 const popupAddForm = new PopupWithForm('.popup_type_add', (input) => {
-  const itemCard = {
+  popupAddForm.close();
+ /*  api.addNewCard({
+    name: input.place,
+    link: input.link
+  })
+  .then(res => cardList.addItem(createCard(res.place, res.link)))
+  .catch(err => console.log(err)) */
+ const itemCard = {
     name: input.place,
     link: input.link
   }
-  cardList.addItem(createCard(itemCard));
-  popupAddForm.close();
+  cardList.addItem(createCard(itemCard)); 
 }
 )
 
