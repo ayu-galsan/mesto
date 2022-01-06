@@ -6,9 +6,9 @@ export default class UserInfo {
   }
 
   getUserInfo() {
-    console.log("Inside UserInfo:" , this._name, this._about);
-    console.dir(this._name);
-    console.dir(this._about);
+    //console.log("Inside UserInfo:" , this._name, this._about);
+    //console.dir(this._name);
+   // console.dir(this._about);
     return {
       id: this._id,
       name: this._name,
@@ -21,7 +21,7 @@ export default class UserInfo {
       this._id = data._id;
       this._name = data.name;
       this._about = data.about;
-      console.log(data);
+     // console.log(data);
       this._render();
     }
   }

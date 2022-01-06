@@ -5,6 +5,7 @@ import '../pages/index.css';
 import { config } from '../utils/constants.js';
 //import { initialCards } from '../utils/constants.js';
 import { editButton } from '../utils/constants.js';
+import { deleteButton } from '../utils/constants.js';
 import { addButton } from '../utils/constants.js';
 import { formEditCard } from '../utils/constants.js';
 import { formAddCard } from '../utils/constants.js';
@@ -16,7 +17,7 @@ import FormValidator from '../components/FormValidator.js';
 import Section from '../components/Section.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
-
+import PopupDeleteCard from '../components/PopupDeleteCard.js';
 
 const userInfo = new UserInfo('.profile__name', '.profile__job');
 const api = new Api({
@@ -41,17 +42,14 @@ const api = new Api({
    }) */
 
 Promise.all([api.getUserData(), api.getInitialCards()])
- 
-.then(([userData, cards]) => {
-  debugger
-    userInfo.setUserInfo(userData.data)
-    console.log(userInfo.getUserInfo(userData.name, userData.about))
-    console.log(userData);
+
+  .then(([userData, cards]) => {
+    userInfo.setUserInfo(userData)
+    // console.log(userInfo.getUserInfo(userData.name, userData.about))
+    // console.log(userData.data);
+    //console.log(userData);
     cardList.renderItems(cards)
   })
-  
-
-
 
 
 const popupWithImage = new PopupWithImage('.popup_type_card');
@@ -92,18 +90,20 @@ const enableValidation = (config) => {
 };
 
 enableValidation(config);
+/* 
+const popupDeleteCard = new PopupDeleteCard('.popup_type_delete');
+deleteButton.addEventListener('click', () => {
+  popupDeleteCard.open();
+  console.log(deleteButton);
+})   */
 
-
-
-const popupEditForm = new PopupWithForm('.popup_type_edit', () => {
+const popupEditForm = new PopupWithForm('.popup_type_edit', (input) => {
   //userInfo.setUserInfo(input);
-  popupEditForm.close();
-  api.editProfile({
-    name: userInfo.getUserInfo().name,
-    about: userInfo.getUserInfo().about
-  })
-    .then(res => console.log(userInfo.setUserInfo(res)))
-    .catch(err => console.log(err))    
+  // popupEditForm.close();
+  api.editProfile(input)
+    .then(res => userInfo.setUserInfo(res))
+    .catch(err => console.log(err))
+    .finally(() => popupEditForm.close())
 })
 
 popupEditForm.setEventListeners();
@@ -113,24 +113,22 @@ editButton.addEventListener('click', () => {
   nameInput.value = info.name;
   jobInput.value = info.about;
   formValidators[formEditCard.getAttribute('name')].resetValidation();
-  popupEditForm.open(); 
-  console.dir(nameInput);
-  console.dir(jobInput); 
+  popupEditForm.open();
+  //  console.dir(nameInput);
+  // console.dir(jobInput); 
 });
 
 const popupAddForm = new PopupWithForm('.popup_type_add', (input) => {
-  popupAddForm.close();
- /*  api.addNewCard({
-    name: input.place,
-    link: input.link
-  })
-  .then(res => cardList.addItem(createCard(res.place, res.link)))
-  .catch(err => console.log(err)) */
- const itemCard = {
-    name: input.place,
-    link: input.link
-  }
-  cardList.addItem(createCard(itemCard)); 
+  /* popupAddForm.close();
+      const itemCard = {
+      name: input.place,
+      link: input.link
+    }
+    cardList.addItem(createCard(itemCard));  */
+  api.addNewCard(input)
+    .then(res => cardList.addItem(createCard(res)))
+    .catch(err => console.log(err))
+    .finally(() => popupAddForm.close())
 }
 )
 

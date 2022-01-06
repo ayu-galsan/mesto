@@ -2,6 +2,8 @@ export default class Card {
   constructor(data, cardselector, openPopup) {
     this._name = data.name;
     this._link = data.link;
+    //this._like = data.like;
+    //this._id = data.id;
     this._cardselector = cardselector;
     this._openPopup = openPopup;
   }
@@ -26,6 +28,12 @@ export default class Card {
     this._elementImage.src = this._link;
     this._elementImage.alt = this._name;
     this._elementTitle.textContent = this._name;
+   /*  if(this._data.owner._id === this._id) {
+      this._element.querySelector('.element__delete');
+      console.log(this._element.querySelector('.element__delete'))
+    } else {
+      this._element.querySelector('.element__delete').remove();
+    } */
     this._setEventListeners();
     return this._element;
   }

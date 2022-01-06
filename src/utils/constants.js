@@ -1,4 +1,5 @@
 export const editButton = document.querySelector('.profile__edit-button');
+export const deleteButton = document.querySelector('.element__delete');
 export const addButton = document.querySelector('.profile__add-button');
 export const formEditCard = document.querySelector('.popup__form_edit-card');
 export const formAddCard = document.querySelector('.popup__form_add-card');
