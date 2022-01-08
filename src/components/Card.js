@@ -1,11 +1,16 @@
 export default class Card {
-  constructor(data, cardselector, openPopup) {
+  constructor(data, cardselector, userId, openPopup, handleDelete, addLike, deleteLike) {
     this._name = data.name;
     this._link = data.link;
-    //this._like = data.like;
-    //this._id = data.id;
+    this._likes = data.likes;
+    this._ownerId = data.owner._id;
+    this._id = data._id;
     this._cardselector = cardselector;
+    this._userId = userId;
     this._openPopup = openPopup;
+    this._handleDelete = handleDelete;
+    this._addLike = addLike;
+    this._deleteLike = deleteLike;
   }
 
   //связываем класс с разметкой
@@ -24,16 +29,21 @@ export default class Card {
     this._elementImage = this._element.querySelector('.element__image');
     this._elementTitle = this._element.querySelector('.element__title');
     this._elementLike = this._element.querySelector('.element__like');
-    this._elementDelete = this._element.querySelector('.element__delete')
+    this._likesCount = this._element.querySelector('.element__likesCount');
+    this._elementDelete = this._element.querySelector('.element__delete');
     this._elementImage.src = this._link;
     this._elementImage.alt = this._name;
     this._elementTitle.textContent = this._name;
-   /*  if(this._data.owner._id === this._id) {
-      this._element.querySelector('.element__delete');
-      console.log(this._element.querySelector('.element__delete'))
+    if (this._ownerId === this._userId) {
+      this._elementDelete;
     } else {
-      this._element.querySelector('.element__delete').remove();
-    } */
+      this._elementDelete.remove();
+    }
+    const checkLike = this._likes.some(({ _id }) => _id === this._userId);
+    if (checkLike === true) {
+      this._elementLike.classList.add('element__like_active');
+    }
+    this._likesCount.textContent = this._likes.length;
     this._setEventListeners();
     return this._element;
   }
@@ -41,7 +51,7 @@ export default class Card {
   //добавляем обработчики событий
   _setEventListeners() {
     this._elementLike.addEventListener('click', () => this._handleLikeClick());
-    this._elementDelete.addEventListener('click', () => this._remove());
+    this._elementDelete.addEventListener('click', () => this._handleDelete());
     this._elementImage.addEventListener('click', () => this._handleCardClick());
   }
 
@@ -49,12 +59,12 @@ export default class Card {
     this._elementLike.classList.toggle('element__like_active');
   }
 
-  _remove() {
+  remove() {
     this._element.remove();
   }
 
   _handleCardClick = () => {
-    this._openPopup({name: this._name, link: this._link});
+    this._openPopup({ name: this._name, link: this._link });
   }
 
 }

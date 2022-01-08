@@ -2,10 +2,8 @@ import Api from '../components/Api.js';
 
 import '../pages/index.css';
 
-import { config } from '../utils/constants.js';
-//import { initialCards } from '../utils/constants.js';
+import { config, profileName } from '../utils/constants.js';
 import { editButton } from '../utils/constants.js';
-import { deleteButton } from '../utils/constants.js';
 import { addButton } from '../utils/constants.js';
 import { formEditCard } from '../utils/constants.js';
 import { formAddCard } from '../utils/constants.js';
@@ -17,7 +15,7 @@ import FormValidator from '../components/FormValidator.js';
 import Section from '../components/Section.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
-import PopupDeleteCard from '../components/PopupDeleteCard.js';
+import PopupWithConfirmation from '../components/PopupWithConfirmation.js';
 
 const userInfo = new UserInfo('.profile__name', '.profile__job');
 const api = new Api({
@@ -25,37 +23,35 @@ const api = new Api({
   token: "aa423f91-d0a1-4966-9ae7-163cc71f5190"
 })
 
-/* api.getInitialCards()
- .then(res => {
-   cardList.renderItems(res)
- })
- .catch(err => {
-   console.log("Ошибка:", err)
- })
-
- api.getUserData() 
-   .then(res => {
-     console.log(userInfo.setUserInfo(res.name, res.about))
-   })
-   .catch(err => {
-     console.log("Ошибка:", err)
-   }) */
 
 Promise.all([api.getUserData(), api.getInitialCards()])
 
   .then(([userData, cards]) => {
     userInfo.setUserInfo(userData)
-    // console.log(userInfo.getUserInfo(userData.name, userData.about))
-    // console.log(userData.data);
-    //console.log(userData);
+    console.log(userData);
     cardList.renderItems(cards)
   })
 
 
 const popupWithImage = new PopupWithImage('.popup_type_card');
+const popupWithConfirmation = new PopupWithConfirmation('.popup_type_delete', () => { }
+);
+popupWithConfirmation.setEventListeners();
 
 function createCard(item) {
-  const card = new Card(item, '.template', popupWithImage.open);
+  const card = new Card(item, '.template', userInfo._id, popupWithImage.open,
+    (card) => {
+      popupWithConfirmation.open();
+      popupWithConfirmation.setSubmit(() => {
+        api.deleteCard(item)
+          .then(() => card.remove())
+          .catch(err => console.log(err))
+          .finally(() => popupWithConfirmation.close())
+      })
+    },
+    api.addLike(item),
+    api.deleteLike(item)
+  );
   const cardElement = card.generateCard();
   return cardElement
 }
@@ -63,7 +59,6 @@ function createCard(item) {
 popupWithImage.setEventListeners();
 
 const cardList = new Section({
-  //items: initialCards,
   renderer: (item) => {
     cardList.addItem(createCard(item));
   }
@@ -71,7 +66,6 @@ const cardList = new Section({
   '.elements'
 )
 
-//cardList.renderItems();
 
 //создаем универсальный экземпляр валидаторов всех форм
 const formValidators = {};
@@ -90,16 +84,8 @@ const enableValidation = (config) => {
 };
 
 enableValidation(config);
-/* 
-const popupDeleteCard = new PopupDeleteCard('.popup_type_delete');
-deleteButton.addEventListener('click', () => {
-  popupDeleteCard.open();
-  console.log(deleteButton);
-})   */
 
 const popupEditForm = new PopupWithForm('.popup_type_edit', (input) => {
-  //userInfo.setUserInfo(input);
-  // popupEditForm.close();
   api.editProfile(input)
     .then(res => userInfo.setUserInfo(res))
     .catch(err => console.log(err))
@@ -114,17 +100,9 @@ editButton.addEventListener('click', () => {
   jobInput.value = info.about;
   formValidators[formEditCard.getAttribute('name')].resetValidation();
   popupEditForm.open();
-  //  console.dir(nameInput);
-  // console.dir(jobInput); 
 });
 
 const popupAddForm = new PopupWithForm('.popup_type_add', (input) => {
-  /* popupAddForm.close();
-      const itemCard = {
-      name: input.place,
-      link: input.link
-    }
-    cardList.addItem(createCard(itemCard));  */
   api.addNewCard(input)
     .then(res => cardList.addItem(createCard(res)))
     .catch(err => console.log(err))

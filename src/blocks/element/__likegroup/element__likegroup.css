@@ -3,6 +3,6 @@
   flex-direction: column;
   margin: -3px 5px -9px auto;
   align-items: center;
-  min-height: 35px;
+  max-height: 35px;
   min-width: 22px;
 }
