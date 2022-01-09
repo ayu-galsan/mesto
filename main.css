@@ -28,9 +28,6 @@
 .popup__error_visible{display:flex}
 .popup__input_type_error{border-bottom:1px solid red;margin:0}
 .popup__submit-button{background-color:#000;border:none;border-radius:2px;color:#fff;cursor:pointer;font-size:18px;height:50px;line-height:1.22;margin:18px 0 0;max-width:358px;padding:0;text-align:center;transition:opacity .5s ease-in}.popup__submit-button:hover{opacity:.8}@media screen and (max-width:767px){.popup__submit-button{font-size:14px;height:46px;margin-top:15px;max-width:238px}}
-.popup__submit-save{background-color:#000;border:none;border-radius:2px;color:#fff;display:none;font-size:18px;height:50px;line-height:1.22;margin:18px 0 0;max-width:358px;padding:0;text-align:center}@media screen and (max-width:767px){.popup__submit-save{font-size:14px;height:46px;margin-top:15px;max-width:238px}}
-.popup__submit-button_hidden{display:none}
-.popup__submit-save_visible{display:block}
 .popup__submit-button_disabled{background-color:#fff;border:1px solid rgba(0,0,0,.2);color:rgba(0,0,0,.2);margin:5px 0 0;padding:0}
 .elements{display:grid;gap:20px 17px;grid-template-columns:repeat(auto-fill,282px);margin:0 auto 66px;max-width:880px}@media screen and (max-width:1023px){.elements{-moz-column-gap:40px;column-gap:40px;justify-items:center;max-width:680px}}@media screen and (max-width:767px){.elements{margin-bottom:48px;max-width:282px}}
 .element{display:flex;flex-direction:column;max-width:282px;position:relative}
