@@ -71,9 +71,7 @@ popupWithImage.setEventListeners();
 
 const cardList = new Section({
   renderer: (item) => {
-    //cardList.appendItem(createCard(item));
-    cardList.addItem(createCard(item));
-    console.log(item);
+    cardList.appendItem(createCard(item));
   }
 },
   '.elements'
