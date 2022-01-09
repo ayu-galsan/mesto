@@ -2,10 +2,11 @@ import Api from '../components/Api.js';
 
 import '../pages/index.css';
 
-import { config, profileName } from '../utils/constants.js';
+import { config } from '../utils/constants.js';
 import { editButton } from '../utils/constants.js';
 import { addButton } from '../utils/constants.js';
 import { formEditCard } from '../utils/constants.js';
+import { formEditAvatar } from '../utils/constants.js';
 import { formAddCard } from '../utils/constants.js';
 import { nameInput } from '../utils/constants.js';
 import { jobInput } from '../utils/constants.js';
@@ -16,8 +17,9 @@ import Section from '../components/Section.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import PopupWithConfirmation from '../components/PopupWithConfirmation.js';
+import { profileAvatar } from '../utils/constants.js';
 
-const userInfo = new UserInfo('.profile__name', '.profile__job');
+const userInfo = new UserInfo('.profile__name', '.profile__job', '.profile__avatar');
 const api = new Api({
   adress: "https://mesto.nomoreparties.co/v1/cohort-32",
   token: "aa423f91-d0a1-4966-9ae7-163cc71f5190"
@@ -28,7 +30,6 @@ Promise.all([api.getUserData(), api.getInitialCards()])
 
   .then(([userData, cards]) => {
     userInfo.setUserInfo(userData)
-    console.log(userData);
     cardList.renderItems(cards)
   })
 
@@ -40,18 +41,26 @@ popupWithConfirmation.setEventListeners();
 
 function createCard(item) {
   const card = new Card(item, '.template', userInfo._id, popupWithImage.open,
-    (card) => {
+    () => {
       popupWithConfirmation.open();
       popupWithConfirmation.setSubmit(() => {
         api.deleteCard(item)
-          .then(() => card.remove())
+          .then(() => card.deleteCard())
           .catch(err => console.log(err))
           .finally(() => popupWithConfirmation.close())
       })
     },
-    api.addLike(item),
-    api.deleteLike(item)
-  );
+    (card) => {
+      api.addLike(item)
+        .then(data => card.setLikesCount(data))
+        .catch(err => console.log(err))
+    },
+    (card) => {
+      api.deleteLike(item)
+        .then(data => card.setLikesCount(data))
+        .catch(err => console.log(err))
+    }
+  )
   const cardElement = card.generateCard();
   return cardElement
 }
@@ -65,7 +74,6 @@ const cardList = new Section({
 },
   '.elements'
 )
-
 
 //создаем универсальный экземпляр валидаторов всех форм
 const formValidators = {};
@@ -86,10 +94,14 @@ const enableValidation = (config) => {
 enableValidation(config);
 
 const popupEditForm = new PopupWithForm('.popup_type_edit', (input) => {
+  popupEditForm.renderLoading(true);
   api.editProfile(input)
     .then(res => userInfo.setUserInfo(res))
     .catch(err => console.log(err))
-    .finally(() => popupEditForm.close())
+    .finally(() => {
+      popupEditForm.renderLoading(false);
+      popupEditForm.close()
+    })
 })
 
 popupEditForm.setEventListeners();
@@ -103,10 +115,14 @@ editButton.addEventListener('click', () => {
 });
 
 const popupAddForm = new PopupWithForm('.popup_type_add', (input) => {
+  popupAddForm.renderLoading(true);
   api.addNewCard(input)
     .then(res => cardList.addItem(createCard(res)))
     .catch(err => console.log(err))
-    .finally(() => popupAddForm.close())
+    .finally(() => {
+      popupAddForm.renderLoading(false);
+      popupAddForm.close()
+    })
 }
 )
 
@@ -115,6 +131,24 @@ popupAddForm.setEventListeners();
 addButton.addEventListener('click', () => {
   formValidators[formAddCard.getAttribute('name')].resetValidation();
   popupAddForm.open()
+});
+
+const popupWithAvatar = new PopupWithForm('.popup_type_avatar', (input) => {
+  popupWithAvatar.renderLoading(true);
+  api.editAvatar(input)
+    .then(res => userInfo.setUserInfo(res))
+    .catch(err => console.log(err))
+    .finally(() => {
+      popupWithAvatar.renderLoading(false);
+      popupWithAvatar.close()
+    })
+})
+
+popupWithAvatar.setEventListeners();
+
+profileAvatar.addEventListener('click', () => {
+  formValidators[formEditAvatar.getAttribute('name')].resetValidation();
+  popupWithAvatar.open()
 });
 
 //добавляем каждому popup - popup_transition для плавности анимации

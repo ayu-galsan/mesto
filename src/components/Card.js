@@ -57,9 +57,26 @@ export default class Card {
 
   _handleLikeClick() {
     this._elementLike.classList.toggle('element__like_active');
+    this._addLike(this);
+    this._deleteLike(this);
   }
 
-  remove() {
+  _handleLikeClick() {
+    if (this._elementLike.classList.contains('element__like_active')) {
+      this._elementLike.classList.remove('element__like_active');
+      this._deleteLike(this);
+    }
+    else {
+      this._elementLike.classList.add('element__like_active');
+      this._addLike(this)
+    }
+  }
+
+  setLikesCount(data) {
+    this._likesCount.textContent = data.likes.length;
+  }
+
+  deleteCard() {
     this._element.remove();
   }
 

@@ -15,7 +15,10 @@
     </header>
     <main class="content">
       <section class="profile">
-        <img class="profile__avatar" src="<%=require('./images/profile__avatar.jpg')%>" alt="Изображение Жак-Ив Кусто">
+        <div class="profile__container">
+          <img class="profile__avatar" src="<%=require('./images/profile__avatar.jpg')%>"
+            alt="Изображение Жак-Ив Кусто">
+        </div>
         <div class="profile__info">
           <h1 class="profile__name">Жак-Ив Кусто</h1>
           <button class="profile__edit-button" type="button"></button>
@@ -41,9 +44,25 @@
             maxlength="200">
           <span class="popup__error" id="job-input-error"></span>
           <button class="popup__submit-button" type="submit">Сохранить</button>
+          <button class="popup__submit-save" type="submit">Сохранение...</button>
         </form>
       </div>
     </div>
+
+    <div class="popup popup_type_avatar">
+      <div class="popup__container">
+        <button class="popup__close" type="button"></button>
+        <h2 class="popup__heading">Обновить аватар</h2>
+        <form class="popup__form popup__form_edit-avatar" name="information-avatar" novalidate>
+          <input class="popup__input popup__input_el_link" id="url-input" name="link" type="url" required
+            placeholder="Ссылка на картинку">
+          <span class="popup__error" id="url-input-error"></span>
+          <button class="popup__submit-button" type="submit">Сохранить</button>
+          <button class="popup__submit-save" type="submit">Сохранение...</button>
+        </form>
+      </div>
+    </div>
+
     <div class="popup popup_type_add">
       <div class="popup__container">
         <button class="popup__close" type="button"></button>
@@ -56,6 +75,7 @@
             placeholder="Ссылка на картинку">
           <span class="popup__error" id="url-input-error"></span>
           <button class="popup__submit-button" type="submit">Создать</button>
+          <button class="popup__submit-save" type="submit">Сохранение...</button>
         </form>
       </div>
     </div>
@@ -66,7 +86,7 @@
         <button class="popup__close" type="button"></button>
         <h2 class="popup__heading">Вы уверены?</h2>
         <form class="popup__form popup__form_delete-card" name="information-delete" novalidate>
-        <button class="popup__submit-button" type="submit">Да</button>
+          <button class="popup__submit-button" type="submit">Да</button>
         </form>
       </div>
     </div>

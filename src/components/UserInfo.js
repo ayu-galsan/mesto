@@ -1,8 +1,9 @@
 //создание класса, который будет отображать нформацию о пользователе
 export default class UserInfo {
-  constructor(nameSelector, aboutSelector) {
+  constructor(nameSelector, aboutSelector, avatarSelector) {
     this._nameElement = document.querySelector(nameSelector);
     this._aboutElement = document.querySelector(aboutSelector);
+    this._avatarElement = document.querySelector(avatarSelector);
   }
 
   getUserInfo() {
@@ -18,9 +19,13 @@ export default class UserInfo {
       this._id = data._id;
       this._name = data.name;
       this._about = data.about;
-     //console.log(this._id);
+      this.setUserAvatar(data);
       this._render();
     }
+  }
+
+  setUserAvatar(data) {
+    this._avatarElement.src = data.avatar
   }
 
   _render() {

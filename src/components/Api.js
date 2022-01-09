@@ -56,6 +56,27 @@ export default class Api {
       })
   }
 
+  editAvatar(data) {
+    return fetch(`${this.adress}/users/me/avatar`, {
+      method: 'PATCH',
+      headers: {
+        authorization: this.token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        avatar: data.link
+      })
+    }
+    )
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return Promise.reject(`Ошибка при редактировании аватара пользователя: ${res.status}`);
+        }
+      })
+  }
+
   addNewCard(data) {
     return fetch(`${this.adress}/cards`, {
       method: 'POST',
