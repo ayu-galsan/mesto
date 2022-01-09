@@ -21,7 +21,7 @@ import { profileAvatar } from '../utils/constants.js';
 
 const userInfo = new UserInfo('.profile__name', '.profile__job', '.profile__avatar');
 const api = new Api({
-  adress: "https://mesto.nomoreparties.co/v1/cohort-32",
+  address: "https://mesto.nomoreparties.co/v1/cohort-32",
   token: "aa423f91-d0a1-4966-9ae7-163cc71f5190"
 })
 
@@ -32,11 +32,11 @@ Promise.all([api.getUserData(), api.getInitialCards()])
     userInfo.setUserInfo(userData)
     cardList.renderItems(cards)
   })
+  .catch(err => console.log(err))
 
 
 const popupWithImage = new PopupWithImage('.popup_type_card');
-const popupWithConfirmation = new PopupWithConfirmation('.popup_type_delete', () => { }
-);
+const popupWithConfirmation = new PopupWithConfirmation('.popup_type_delete');
 popupWithConfirmation.setEventListeners();
 
 function createCard(item) {
@@ -45,9 +45,11 @@ function createCard(item) {
       popupWithConfirmation.open();
       popupWithConfirmation.setSubmit(() => {
         api.deleteCard(item)
-          .then(() => card.deleteCard())
+          .then(() => {
+            card.deleteCard();
+            popupWithConfirmation.close();
+          })
           .catch(err => console.log(err))
-          .finally(() => popupWithConfirmation.close())
       })
     },
     (card) => {
@@ -69,7 +71,9 @@ popupWithImage.setEventListeners();
 
 const cardList = new Section({
   renderer: (item) => {
+    //cardList.appendItem(createCard(item));
     cardList.addItem(createCard(item));
+    console.log(item);
   }
 },
   '.elements'
@@ -94,14 +98,14 @@ const enableValidation = (config) => {
 enableValidation(config);
 
 const popupEditForm = new PopupWithForm('.popup_type_edit', (input) => {
-  popupEditForm.renderLoading(true);
+  popupEditForm.renderLoading('Сохранение...');
   api.editProfile(input)
-    .then(res => userInfo.setUserInfo(res))
-    .catch(err => console.log(err))
-    .finally(() => {
-      popupEditForm.renderLoading(false);
-      popupEditForm.close()
+    .then(res => {
+      userInfo.setUserInfo(res);
+      popupEditForm.close();
     })
+    .catch(err => console.log(err))
+    .finally(() => popupEditForm.renderLoading('Сохранить'))
 })
 
 popupEditForm.setEventListeners();
@@ -115,16 +119,15 @@ editButton.addEventListener('click', () => {
 });
 
 const popupAddForm = new PopupWithForm('.popup_type_add', (input) => {
-  popupAddForm.renderLoading(true);
+  popupAddForm.renderLoading('Сохранение...');
   api.addNewCard(input)
-    .then(res => cardList.addItem(createCard(res)))
-    .catch(err => console.log(err))
-    .finally(() => {
-      popupAddForm.renderLoading(false);
-      popupAddForm.close()
+    .then(res => {
+      cardList.addItem(createCard(res));
+      popupAddForm.close();
     })
-}
-)
+    .catch(err => console.log(err))
+    .finally(() => popupAddForm.renderLoading('Создать'))
+})
 
 popupAddForm.setEventListeners();
 
@@ -134,14 +137,14 @@ addButton.addEventListener('click', () => {
 });
 
 const popupWithAvatar = new PopupWithForm('.popup_type_avatar', (input) => {
-  popupWithAvatar.renderLoading(true);
+  popupWithAvatar.renderLoading('Сохранение...');
   api.editAvatar(input)
-    .then(res => userInfo.setUserInfo(res))
-    .catch(err => console.log(err))
-    .finally(() => {
-      popupWithAvatar.renderLoading(false);
-      popupWithAvatar.close()
+    .then(res => {
+      userInfo.setUserInfo(res);
+      popupWithAvatar.close();
     })
+    .catch(err => console.log(err))
+    .finally(() => popupWithAvatar.renderLoading('Сохранить'))
 })
 
 popupWithAvatar.setEventListeners();

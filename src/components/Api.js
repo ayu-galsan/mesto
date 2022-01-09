@@ -1,41 +1,29 @@
 export default class Api {
-  constructor({ adress, token }) {
-    this.adress = adress,
+  constructor({ address, token }) {
+    this.address = address,
       this.token = token
   }
 
   getInitialCards() {
-    return fetch(`${this.adress}/cards`, {
+    return fetch(`${this.address}/cards`, {
       headers: {
         authorization: this.token
       }
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json()
-        } else {
-          return Promise.reject(`Ошибка: ${res.status}`);
-        }
-      })
+      .then(res => this._getResponseData(res))
   }
 
   getUserData() {
-    return fetch(`${this.adress}/users/me`, {
+    return fetch(`${this.address}/users/me`, {
       headers: {
         authorization: this.token
       }
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json()
-        } else {
-          return Promise.reject(`Ошибка: ${res.status}`);
-        }
-      })
+      .then(res => this._getResponseData(res))
   }
 
   editProfile(data) {
-    return fetch(`${this.adress}/users/me`, {
+    return fetch(`${this.address}/users/me`, {
       method: 'PATCH',
       headers: {
         authorization: this.token,
@@ -47,17 +35,11 @@ export default class Api {
       })
     }
     )
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          return Promise.reject(`Ошибка при редактировании профиля: ${res.status}`);
-        }
-      })
+      .then(res => this._getResponseData(res))
   }
 
   editAvatar(data) {
-    return fetch(`${this.adress}/users/me/avatar`, {
+    return fetch(`${this.address}/users/me/avatar`, {
       method: 'PATCH',
       headers: {
         authorization: this.token,
@@ -68,17 +50,11 @@ export default class Api {
       })
     }
     )
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          return Promise.reject(`Ошибка при редактировании аватара пользователя: ${res.status}`);
-        }
-      })
+      .then(res => this._getResponseData(res))
   }
 
   addNewCard(data) {
-    return fetch(`${this.adress}/cards`, {
+    return fetch(`${this.address}/cards`, {
       method: 'POST',
       headers: {
         authorization: this.token,
@@ -90,63 +66,46 @@ export default class Api {
       })
     }
     )
-      .then(res => {
-        if (res.ok) {
-          return res.json()
-        } else {
-          return Promise.reject(`Ошибка при создании карты: ${res.status}`);
-        }
-      })
+      .then(res => this._getResponseData(res))
   }
 
   deleteCard(data) {
-    return fetch(`${this.adress}/cards/${data._id}`, {
+    return fetch(`${this.address}/cards/${data._id}`, {
       method: 'DELETE',
       headers: {
         authorization: this.token,
         'Content-Type': 'application/json'
       }
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json()
-        } else {
-          return Promise.reject(`Ошибка при удалении карточки: ${res.status}`);
-        }
-      })
+      .then(res => this._getResponseData(res))
   }
 
   addLike(data) {
-    return fetch(`${this.adress}/cards/${data._id}/likes`, {
+    return fetch(`${this.address}/cards/${data._id}/likes`, {
       method: 'PUT',
       headers: {
         authorization: this.token,
         'Content-Type': 'application/json'
       }
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json()
-        } else {
-          return Promise.reject(`Ошибка при установке "лайка": ${res.status}`);
-        }
-      })
+      .then(res => this._getResponseData(res))
   }
 
   deleteLike(data) {
-    return fetch(`${this.adress}/cards/${data._id}/likes`, {
+    return fetch(`${this.address}/cards/${data._id}/likes`, {
       method: 'DELETE',
       headers: {
         authorization: this.token,
         'Content-Type': 'application/json'
       }
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json()
-        } else {
-          return Promise.reject(`Ошибка при удалении "лайка": ${res.status}`);
-        }
-      })
+      .then(res => this._getResponseData(res))
+  }
+
+  _getResponseData(res) {
+    if (!res.ok) {
+      return Promise.reject(`Ошибка: ${res.status}`);
+    }
+    return res.json();
   }
 }  

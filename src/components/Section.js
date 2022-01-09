@@ -12,9 +12,9 @@ export default class Section {
       this._renderer(item);
     });
   } 
-
+ 
   // метод addItem принимает DOM-элемент и добавляет его в контейнер.
   addItem(item) {
-    this._container.prepend(item);
+    this._container.append(item);
   }
 }

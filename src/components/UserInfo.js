@@ -19,13 +19,9 @@ export default class UserInfo {
       this._id = data._id;
       this._name = data.name;
       this._about = data.about;
-      this.setUserAvatar(data);
+      this._avatarElement.src = data.avatar
       this._render();
     }
-  }
-
-  setUserAvatar(data) {
-    this._avatarElement.src = data.avatar
   }
 
   _render() {

@@ -34,16 +34,11 @@ export default class Card {
     this._elementImage.src = this._link;
     this._elementImage.alt = this._name;
     this._elementTitle.textContent = this._name;
-    if (this._ownerId === this._userId) {
-      this._elementDelete;
-    } else {
+    if (this._ownerId !== this._userId) {
       this._elementDelete.remove();
     }
-    const checkLike = this._likes.some(({ _id }) => _id === this._userId);
-    if (checkLike === true) {
-      this._elementLike.classList.add('element__like_active');
-    }
     this._likesCount.textContent = this._likes.length;
+    this._handleCheckLike();
     this._setEventListeners();
     return this._element;
   }
@@ -55,10 +50,11 @@ export default class Card {
     this._elementImage.addEventListener('click', () => this._handleCardClick());
   }
 
-  _handleLikeClick() {
-    this._elementLike.classList.toggle('element__like_active');
-    this._addLike(this);
-    this._deleteLike(this);
+  _handleCheckLike() {
+    const checkLike = this._likes.some(({ _id }) => _id === this._userId);
+    if (checkLike) {
+      this._elementLike.classList.add('element__like_active');
+    }
   }
 
   _handleLikeClick() {
@@ -73,11 +69,13 @@ export default class Card {
   }
 
   setLikesCount(data) {
+    this._handleCheckLike(data);
     this._likesCount.textContent = data.likes.length;
   }
 
   deleteCard() {
     this._element.remove();
+    this._element = null;
   }
 
   _handleCardClick = () => {

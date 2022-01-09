@@ -6,7 +6,7 @@ export default class PopupWithForm extends Popup {
     this._form = this._popup.querySelector('.popup__form');
     this._inputList = Array.from(this._form.querySelectorAll('.popup__input'));
     this._btnLoader = Array.from(this._form.querySelectorAll('.popup__submit-save'));
-    this._btnSubmit = Array.from(this._form.querySelectorAll('.popup__submit-button'));
+    this._btnSubmit = this._form.querySelector('.popup__submit-button')
   }
 
   _getInputValues = () => {
@@ -25,15 +25,9 @@ export default class PopupWithForm extends Popup {
     });
   }
 
-  renderLoading(isLoading) {
-    if (isLoading) {
-      this._btnLoader.forEach(btn => btn.classList.add('popup__submit-save_visible'));
-      this._btnSubmit.forEach(btn => btn.classList.add('popup__submit-button_hidden'));
-    } else {
-      this._btnLoader.forEach(btn => btn.classList.remove('popup__submit-save_visible'));
-      this._btnSubmit.forEach(btn => btn.classList.remove('popup__submit-button_hidden'))
-    }
-  }
+  renderLoading(title) {
+    this._btnSubmit.textContent = title;
+  };
 
   close() {
     super.close();
